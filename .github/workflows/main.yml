@@ -1,0 +1,13 @@
+name: Meu Primeiro CI  # Nome do processo
+
+on: [push]            # O robô liga toda vez que você faz um "push"
+
+jobs:
+  verificar-codigo:   # O que o robô vai fazer
+    runs-on: windows-latest # Ele vai usar um computador com Linux
+    
+    steps:
+      - uses: actions/checkout@v4  # Passo 1: Copia seu código
+      
+      - name: Rodar Teste         # Passo 2: Executa um comando
+        run: echo "Aqui o robô rodaria seus testes automáticos!"
