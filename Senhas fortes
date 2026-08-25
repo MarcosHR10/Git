@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testador de Força de Senha</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #3b82f6;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --success: #10b981;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        header {
+            background-color: rgba(11, 15, 25, 0.9);
+            border-bottom: 1px solid var(--borda);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+         /* Estilização moderna para o botão */
+         .btn-voltar {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background-color: #3b82f6;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        /* Efeito ao passar o mouse */
+        .btn-voltar:hover {
+            background-color: #2563eb;
+        }
+
+        /* Efeito ao clicar */
+        .btn-voltar:active {
+            transform: scale(0.98);
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            text-align: center;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        input[type="password"], input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            background-color: #0f172a;
+            border: 2px solid #334155;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1.1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+        }
+
+        .toggle-btn {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .strength-bar-container {
+            height: 6px;
+            background-color: #334155;
+            border-radius: 3px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: width 0.4s, background-color 0.4s;
+        }
+
+        .result-box {
+            background-color: #0f172a;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #334155;
+        }
+
+        .result-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .time-output {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            word-break: break-word;
+        }
+
+        .metrics {
+            margin-top: 15px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .btn-voltar {
+            position: fixed;       /* Fixa o elemento na tela (não sai do lugar ao rolar) */
+            top: 20px;             /* Distância de 20px do topo */
+            right: 20px;           /* Distância de 20px da direita */
+            z-index: 1000;
+        }
+
+        .metric-item span {
+            font-weight: bold;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    
+    <a href="ciber.html"><button class="btn-voltar" onclick="history.back()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Voltar
+    </button></a>
+
+
+<div class="container">
+    <h1>Testador de Senha</h1>
+    <p class="subtitle">Descubra quanto tempo um computador levaria para adivinhar sua senha.</p>
+    
+    <div class="input-group">
+        <input type="password" id="passwordInput" placeholder="Digite sua senha aqui...">
+        <button class="toggle-btn" id="toggleBtn">Mostrar</button>
+    </div>
+
+    <div class="strength-bar-container">
+        <div class="strength-bar" id="strengthBar"></div>
+    </div>
+
+    <div class="result-box" id="resultBox">
+        <div class="result-title">Tempo para quebrar (força bruta):</div>
+        <div class="time-output" id="timeOutput">0 segundos</div>
+    </div>
+
+    <div class="metrics">
+        <div class="metric-item">Caracteres: <span id="charCount">0</span></div>
+        <div class="metric-item">Complexidade: <span id="complexityText">Muito Fraca</span></div>
+    </div>
+</div>
+
+<script>
+    const passwordInput = document.getElementById('passwordInput');
+    const toggleBtn = document.getElementById('toggleBtn');
+    const strengthBar = document.getElementById('strengthBar');
+    const timeOutput = document.getElementById('timeOutput');
+    const charCount = document.getElementById('charCount');
+    const complexityText = document.getElementById('complexityText');
+    const resultBox = document.getElementById('resultBox');
+
+    // Alternar visibilidade da senha
+    toggleBtn.addEventListener('click', () => {
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleBtn.textContent = 'Esconder';
+        } else {
+            passwordInput.type = 'password';
+            toggleBtn.textContent = 'Mostrar';
+        }
+    });
+
+    // Escutar digitação
+    passwordInput.addEventListener('input', checkPassword);
+
+    function checkPassword() {
+        const password = passwordInput.value;
+        const length = password.length;
+        
+        charCount.textContent = length;
+
+        if (length === 0) {
+            resetUI();
+            return;
+        }
+
+        // Definir o tamanho do alfabeto de possibilidades
+        let poolSize = 0;
+        if (/[a-z]/.test(password)) poolSize += 26; // Letras minúsculas
+        if (/[A-Z]/.test(password)) poolSize += 26; // Letras maiúsculas
+        if (/[0-9]/.test(password)) poolSize += 10; // Números
+        if (/[^a-zA-Z0-9]/.test(password)) poolSize += 33; // Símbolos comuns
+
+        // Total de combinações possíveis (poolSize elevado ao comprimento)
+        const combinations = Math.pow(poolSize, length);
+
+        // Velocidade estimada de um supercomputador hacker/placa de vídeo moderna
+        // Simulando cerca de 100 bilhões (1e11) de tentativas por segundo (ataque offline/hash bcrypt/md5 otimizado)
+        const guessesPerSecond = 100000000000; 
+        const secondsToCrack = combinations / guessesPerSecond;
+
+        // Atualizar exibição de tempo
+        timeOutput.textContent = formatTime(secondsToCrack);
+
+        // Calcular progresso da barra e cores com base no tempo
+        updateUI(secondsToCrack, length, poolSize);
+    }
+
+    function formatTime(seconds) {
+        if (seconds < 1) return "Imediato (menos de 1 segundo)";
+        if (seconds < 60) return `${Math.round(seconds)} segundos`;
+        
+        const minutes = seconds / 60;
+        if (minutes < 60) return `${Math.round(minutes)} minutos`;
+        
+        const hours = minutes / 60;
+        if (hours < 24) return `${Math.round(hours)} horas`;
+        
+        const days = hours / 24;
+        if (days < 365) return `${Math.round(days)} dias`;
+        
+        const years = days / 365;
+        if (years < 1000) return `${Math.round(years)} anos`;
+        if (years < 1000000) return `${Math.round(years / 1000)} mil anos`;
+        if (years < 1000000000) return `${Math.round(years / 1000000)} milhões de anos`;
+        
+        return "Bilhões de anos";
+    }
+
+    function updateUI(seconds, length, poolSize) {
+        let score = 0;
+
+        // Pontuação básica por tempo e complexidade
+        if (seconds > 0.01) score = 1;      // Muito fraca
+        if (seconds > 60 && length >= 6) score = 2; // Fraca
+        if (seconds > 86400 && poolSize > 35) score = 3; // Boa
+        if (seconds > 31536000 * 10 && length >= 10) score = 4; // Muito Forte
+        if (seconds > 31536000 * 100000) score = 5; // Inquebrável
+
+        // Ajustes visuais da barra e textos
+        const colors = ['#ef4444', '#ef4444', '#f59e0b', '#3b82f6', '#10b981', '#10b981'];
+        const texts = ['Muito Fraca', 'Muito Fraca', 'Fraca', 'Boa', 'Muito Forte', 'Inquebrável'];
+        const widths = ['0%', '20%', '40%', '60%', '80%', '100%'];
+
+        strengthBar.style.width = widths[score];
+        strengthBar.style.backgroundColor = colors[score];
+        resultBox.style.borderColor = colors[score];
+        complexityText.textContent = texts[score];
+        complexityText.style.color = colors[score];
+    }
+
+    function resetUI() {
+        strengthBar.style.width = '0%';
+        timeOutput.textContent = '0 segundos';
+        complexityText.textContent = 'Muito Fraca';
+        complexityText.style.color = 'var(--text-muted)';
+        resultBox.style.borderColor = '#334155';
+    }
+</script>
+
+</body>
+</html>
