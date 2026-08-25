@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberShield | Guia de Conscientização Digital</title>
+    <style>
+        :root {
+            --bg-principal: #0b0f19;
+            --bg-card: #131a2c;
+            --bg-destaque: #1e2942;
+            --texto-claro: #f1f5f9;
+            --texto-mutado: #94a3b8;
+            --azul-neon: #38bdf8;
+            --azul-hover: #0ea5e9;
+            --borda: #1e293b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-principal);
+            color: var(--texto-claro);
+            line-height: 1.6;
+        }
+
+        /* Cabeçalho e Navegação */
+        header {
+            background-color: rgba(11, 15, 25, 0.9);
+            border-bottom: 1px solid var(--borda);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--azul-neon);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        .nav-menu a {
+            color: var(--texto-mutado);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover {
+            color: var(--azul-neon);
+        }
+
+        /* Seção Hero (Abertura) */
+        .hero {
+            padding: 150px 20px 8px 20px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .hero h1 span {
+            color: var(--azul-neon);
+        }
+
+        .hero p {
+            color: var(--texto-mutado);
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+        }
+
+        /* Grade de Conteúdo */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .grid-topicos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+        }
+
+        @media (max-width: 600px) {
+            .grid-topicos {
+                grid-template-columns: 1fr;
+            }
+            .hero h1 { font-size: 2rem; }
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--borda);
+            border-radius: 12px;
+            padding: 30px;
+            transition: transform 0.3s, border-color 0.3s;
+            scroll-margin-top: 100px;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--azul-neon);
+        }
+
+        .card-tag {
+            display: inline-block;
+            background-color: rgba(56, 189, 248, 0.1);
+            color: var(--azul-neon);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .card h2 {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .card p {
+            color: var(--texto-mutado);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        /* Listas de Dicas */
+        .bloco-dicas {
+            background-color: var(--bg-destaque);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+
+        .bloco-dicas h3 {
+            font-size: 1rem;
+            margin-bottom: 12px;
+            color: var(--azul-neon);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bloco-dicas ul {
+            list-style: none;
+        }
+
+        .bloco-dicas li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: var(--texto-claro);
+        }
+
+        .bloco-dicas li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--azul-neon);
+            font-weight: bold;
+        }
+
+        /* Rodapé */
+        footer {
+            background-color: #070a12;
+            border-top: 1px solid var(--borda);
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 60px;
+            color: var(--texto-mutado);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navegação -->
+    <header>
+        <nav class="nav-container">
+            <a href="#" class="logo">🛡️ CyberSegurança na Web</a>
+            <ul class="nav-menu">
+                <li><a href="index.html">O quão forte é sua senha ?</a></li>
+                <li><a href="site.html">Quiz</a></li>
+                <li><a href="#engenharia">Engenharia Social</a></li>
+                <li><a href="#phishing">Phishing</a></li>
+                <li><a href="#senhas">Senhas Fortes</a></li>
+                <li><a href="#wifi">Redes Wi-Fi</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Introdução -->
+    <section class="hero">
+        <h1>Sua segurança digital começa com a <span>informação</span></h1>
+        <p>A maior parte dos incidentes de segurança cibernética acontece por falta de atenção a detalhes simples. Entenda as principais ameaças do ambiente digital e aprenda a se proteger de forma prática.</p>
+    </section>
+
+    <!-- Seções de Conteúdo -->
+    <main class="container">
+        <div class="grid-topicos">
+
+            <!-- Engenharia Social -->
+            <article class="card" id="engenharia">
+                <span class="card-tag">Manipulação Humana</span>
+                <h2>Engenharia Social</h2>
+                <p>Engenharia social é a arte de manipular pessoas para que elas executem ações ou Background segredos confidenciais. Em vez de atacar brechas no software, os criminosos exploram a confiança, a curiosidade ou o medo do próprio usuário.</p>
+                <p>O invasor pode se passar por um técnico de suporte, um gerente de banco ou até mesmo um colega de trabalho, criando uma história falsa muito convincente para obter códigos de acesso ou dados pessoais.</p>
+                
+                <div class="bloco-dicas">
+                    <h3>Como prevenir:</h3>
+                    <ul>
+                        <li>Desconfie de ligações ou mensagens que exijam ações urgentes ou imediatas.</li>
+                        <li>Nunca forneça senhas, tokens ou dados sensíveis por telefone ou chat de suporte.</li>
+                        <li>Confirme a identidade de quem está falando por um canal oficial alternativo.</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- Phishing -->
+            <article class="card" id="phishing">
+                <span class="card-tag">Iscas Digitais</span>
+                <h2>Phishing</h2>
+                <p>O phishing é uma categoria de engenharia social focada em mensagens em massa. Golpistas enviam e-mails, SMS (Smishing) ou mensagens no WhatsApp simulando comunicados oficiais de empresas conhecidas (como bancos, streamings ou transportadoras).</p>
+                <p>Essas mensagens geralmente contêm links que direcionam a vítima para sites falsos idênticos aos originais, criados apenas para capturar suas credenciais e cartões de crédito quando digitados.</p>
+                
+                <div class="bloco-dicas">
+                    <h3>Sinais de alerta:</h3>
+                    <ul>
+                        <li>Erros de ortografia, formatação estranha ou saudações genéricas como "Prezado cliente".</li>
+                        <li>Endereços de e-mail do remetente falsificados (ex: @suporte-bancobrasil-seguro.com).</li>
+                        <li>Links encurtados ou que não condizem com o site real da instituição.</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- Senhas Fortes -->
+            <article class="card" id="senhas">
+                <span class="card-tag">Autenticação</span>
+                <h2>Senhas Fortes</h2>
+                <p>A senha ainda é a primeira linha de defesa para a maioria das contas. O uso de chaves óbvias ou repetidas em múltiplos sites facilita o trabalho de criminosos que utilizam ferramentas automáticas capazes de testar milhões de combinações por segundo.</p>
+                <p>Se um site que você usa for invadido e sua senha for vazada, os atacantes tentarão usar essa mesma combinação em redes sociais, e-mails e serviços financeiros em cascata.</p>
+                
+                <div class="bloco-dicas">
+                    <h3>Boas práticas:</h3>
+                    <ul>
+                        <li>Crie senhas longas (mínimo de 12 caracteres) misturando letras, números e símbolos.</li>
+                        <li>Não reutilize a mesma senha; utilize um <b>Gerenciador de Senhas</b> para organizá-las.</li>
+                        <li>Ative a <b>Autenticação de Dois Fatores (2FA)</b> em absolutamente todas as contas possíveis.</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- Wi-Fi Público -->
+            <article class="card" id="wifi">
+                <span class="card-tag">Redes de Risco</span>
+                <h2>Riscos em Wi-Fi Aberto</h2>
+                <p>Acessar redes Wi-Fi públicas de cafeterias, aeroportos ou praças sem senha traz grandes perigos. Como os dados trafegam pelo ar de forma aberta, criminosos conectados à mesma rede podem interceptar sua navegação.Ataques do tipo Man-in-the-Middle (Homem no Meio) permitem que o invasor fique entre o seu dispositivo e a internet, lendo o tráfego de sites não criptografados ou redirecionando você para servidores maliciosos.</p>
+                <div class="bloco-dicas">
+                    <h3>Boas práticas:</h3>
+                    <ul>
+                        <li>Evite acessar contas bancárias ou realizar compras enquanto estiver nessas redes.Utilize uma VPN confiável para criptografar todo o tráfego do seu celular ou notebook.Desative a conexão automática de redes Wi-Fi conhecidas nas configurações do aparelho.</li>
+                    </ul>
+                </div>
