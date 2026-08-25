@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Interativo</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #3b82f6;
+            --success: #10b981;
+            --danger: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        header {
+            background-color: rgba(11, 15, 25, 0.9);
+            border-bottom: 1px solid var(--borda);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Estilização moderna para o botão */
+        .btn-voltar {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background-color: #3b82f6;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        /* Efeito ao passar o mouse */
+        .btn-voltar:hover {
+            background-color: #2563eb;
+        }
+
+        /* Efeito ao clicar */
+        .btn-voltar:active {
+            transform: scale(0.98);
+        }
+
+        .quiz-container {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background-color: #334155;
+            border-radius: 3px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: var(--primary);
+            transition: width 0.3s;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .option-btn {
+            background-color: #0f172a;
+            color: var(--text-color);
+            border: 2px solid #334155;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 1rem;
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .option-btn:hover:not([disabled]) {
+            border-color: var(--primary);
+            background-color: #1e293b;
+        }
+
+        .option-btn.correct {
+            background-color: rgba(16, 185, 129, 0.2);
+            border-color: var(--success);
+        }
+
+        .option-btn.wrong {
+            background-color: rgba(239, 68, 68, 0.2);
+            border-color: var(--danger);
+        }
+
+        .next-btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .next-btn:hover {
+            opacity: 0.9;
+        }
+
+        .hide {
+            display: none !important;
+        }
+
+        .result-screen {
+            text-align: center;
+        }
+
+        .result-screen h3 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .btn-voltar {
+            position: fixed;       /* Fixa o elemento na tela (não sai do lugar ao rolar) */
+            top: 20px;             /* Distância de 20px do topo */
+            right: 20px;           /* Distância de 20px da direita */
+            z-index: 1000;
+        }
+
+        .score-text {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 25px;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="ciber.html"><button class="btn-voltar" onclick="history.back()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Voltar
+    </button></a>
+
+<div class="quiz-container">
+    <!-- Tela do Jogo -->
+    <div id="quiz-box">
+        <div class="header">
+            <span id="question-counter" style="color: var(--text-muted); font-size: 0.9rem;">Pergunta 1 de 5</span>
+        </div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <h2 id="question-text">Carregando pergunta...</h2>
+        <div class="options-container" id="options-container">
+            <!-- As opções vão aparecer aqui via JavaScript -->
+        </div>
+        <button id="next-btn" class="next-btn hide">Próxima Pergunta</button>
+    </div>
+
+    <!-- Tela de Resultado -->
+    <div id="result-box" class="result-screen hide">
+        <h3>Quiz Concluído!</h3>
+        <p class="score-text">Você acertou <span id="correct-answers" style="color: var(--success); font-weight: bold;">0</span> de <span id="total-questions">0</span> perguntas.</p>
+        <button id="restart-btn" class="next-btn">Reiniciar Quiz</button>
+    </div>
+</div>
+
+<script>
+    // Banco de dados de perguntas do Quiz
+    const quizData = [
+        {
+            question: "O que é um ataque de 'phishing'?",
+            options: ["Um vírus que apaga arquivos do computador.", "Uma invasão física a um servidor de rede.", "Uma tentativa fraudulenta de obter informações confidenciais fingindo ser uma entidade confiável.", "Um método para criptografar dados corporativos."],
+            correct: 2
+        },
+        {
+            question: "Qual das seguintes opções caracteriza uma senha forte?",
+            options: ["Uma combinação longa de letras maiúsculas e minúsculas, números e símbolos especiais.", "O nome do seu pet seguido pelo ano de nascimento.", "Uma sequência numérica fácil de lembrar, como '12345678'.", "A palavra 'senha' escrita ao contrário."],
+            correct: 0
+        },
+        {
+            question: "Qual é o principal risco de acessar contas bancárias ou serviços sensíveis em uma rede Wi-Fi pública aberta?",
+            options: ["O seu plano de dados móveis pode ser cobrado indevidamente.", "A bateria do celular descarrega mais rápido devido ao roteamento da rede.", "O tráfego de dados pode ser interceptado por terceiros mal-intencionados (ataque de homem no meio).", "A rede pública apaga o histórico do navegador automaticamente para sua proteção."],
+            correct: 2
+        },
+        {
+            question: "O que define o conceito de 'Engenharia Social' em cibersegurança?",
+            options: ["Manipular psicologicamente pessoas para que revelem informações confidenciais ou realizem ações de risco.", "Desenvolver softwares de rede voltados para a interação social.", "Iniciar ataques explorando falhas conhecidas de roteadores públicos.", "Configurar firewalls para bloquear o acesso a redes sociais em empresas."],
+            correct: 0
+        }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    const quizBox = document.getElementById('quiz-box');
+    const resultBox = document.getElementById('result-box');
+    const questionCounter = document.getElementById('question-counter');
+    const progressBar = document.getElementById('progress-bar');
+    const questionText = document.getElementById('question-text');
+    const optionsContainer = document.getElementById('options-container');
+    const nextBtn = document.getElementById('next-btn');
+    const restartBtn = document.getElementById('restart-btn');
+    const correctAnswersSpan = document.getElementById('correct-answers');
+    const totalQuestionsSpan = document.getElementById('total-questions');
+
+    function startQuiz() {
+        currentQuestionIndex = 0;
+        score = 0;
+        resultBox.classList.add('hide');
+        quizBox.classList.remove('hide');
+        showQuestion();
+    }
+
+    function showQuestion() {
+        resetState();
+        const currentQuestion = quizData[currentQuestionIndex];
+        
+        // Atualizar textos e contador
+        questionText.textContent = currentQuestion.question;
+        questionCounter.textContent = `Pergunta ${currentQuestionIndex + 1} de ${quizData.length}`;
+        
+        // Atualizar barra de progresso
+        const progressPercentage = ((currentQuestionIndex) / quizData.length) * 100;
+        progressBar.style.width = `${progressPercentage}%`;
+
+        // Criar os botões das alternativas
+        currentQuestion.options.forEach((option, index) => {
+            const button = document.createElement('button');
+            button.textContent = option;
+            button.classList.add('option-btn');
+            button.addEventListener('click', () => selectOption(button, index));
+            optionsContainer.appendChild(button);
+        });
+    }
+
+    function resetState() {
+        nextBtn.classList.add('hide');
+        optionsContainer.innerHTML = '';
+    }
+
+    function selectOption(selectedButton, index) {
+        const currentQuestion = quizData[currentQuestionIndex];
+        const isCorrect = index === currentQuestion.correct;
+
+        if (isCorrect) {
+            selectedButton.classList.add('correct');
+            score++;
+        } else {
+            selectedButton.classList.add('wrong');
+            // Mostrar a alternativa correta em verde para dar feedback
+            optionsContainer.children[currentQuestion.correct].classList.add('correct');
+        }
+
+        // Bloquear todos os botões após a escolha
+        Array.from(optionsContainer.children).forEach(button => {
+            button.disabled = true;
+        });
+
+        // Mostrar o botão de avançar
+        nextBtn.classList.remove('hide');
+    }
+
+    nextBtn.addEventListener('click', () => {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < quizData.length) {
+            showQuestion();
+        } else {
+            showResults();
+        }
+    });
+
+    function showResults() {
+        progressBar.style.width = '100%';
+        quizBox.classList.add('hide');
+        resultBox.classList.remove('hide');
+        
+        correctAnswersSpan.textContent = score;
+        totalQuestionsSpan.textContent = quizData.length;
+    }
+
+    restartBtn.addEventListener('click', startQuiz);
+
+    // Iniciar o quiz automaticamente ao carregar a página
+    startQuiz();
+</script>
+
+</body>
+</html>
